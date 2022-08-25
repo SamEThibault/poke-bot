@@ -16,12 +16,9 @@ start = time.time() # to analyze runtime
 # store current window in variable for reference later
 main_page = wd.current_window_handle
 
-
 # Head to the url, find the add-to-cart btn, and click it
 # real URL: https://store.401games.ca/products/pokemon-ultra-premium-collection-charizard-pre-order
 # test URL: https://store.401games.ca/collections/all/products/pokemon-astral-radiance-checklane-blister-bundle?variant=42511032156347
-
-
 
 # as long as the add to cart btn is not available, keep trying
 while True:
