@@ -11,6 +11,7 @@ from dotenv import load_dotenv
 load_dotenv()
 wd = wd.Chrome()
 wd.implicitly_wait(10)
+start = time.time() # to analyze runtime
 
 # store current window in variable for reference later
 main_page = wd.current_window_handle
@@ -19,18 +20,33 @@ main_page = wd.current_window_handle
 # Head to the url, find the add-to-cart btn, and click it
 # real URL: https://store.401games.ca/products/pokemon-ultra-premium-collection-charizard-pre-order
 # test URL: https://store.401games.ca/collections/all/products/pokemon-astral-radiance-checklane-blister-bundle?variant=42511032156347
-wd.get("https://store.401games.ca/collections/all/products/pokemon-astral-radiance-checklane-blister-bundle?variant=42511032156347")
-add_cart_btn = wd.find_element(By.XPATH, '//*[@id="AddToCart-product-template"]')
-add_cart_btn.click()
-time.sleep(1)
 
-cart_btn = wd.find_element(By.XPATH, '//*[@id="CartButton"]')
-cart_btn.click()
-time.sleep(1)
 
-checkout_btn = wd.find_element(By.XPATH, '//*[@id="shopify-section-cart-template"]/section/div/div/div/form/div[2]/div[2]/input[2]')
-checkout_btn.click()
-time.sleep(1)
+
+# as long as the add to cart btn is not available, keep trying
+while True:
+    try:
+        wd.get("https://store.401games.ca/collections/all/products/pokemon-astral-radiance-checklane-blister-bundle?variant=42511032156347")
+        time.sleep(1)
+
+        add_cart_btn = wd.find_element(By.XPATH, '//*[@id="AddToCart-product-template"]')
+        add_cart_btn.click()
+        time.sleep(1)
+
+        cart_btn = wd.find_element(By.XPATH, '//*[@id="CartButton"]')
+        cart_btn.click()
+        time.sleep(1)
+
+        checkout_btn = wd.find_element(By.XPATH, '//*[@id="shopify-section-cart-template"]/section/div/div/div/form/div[2]/div[2]/input[2]')
+        checkout_btn.click()
+        time.sleep(1)
+
+        print("Item added to cart!")
+        break
+    except:
+        print("Item not available...")
+
+
 
 # login procedure
 email_field = wd.find_element(By.XPATH, '//*[@id="CustomerEmail"]')
@@ -44,7 +60,7 @@ time.sleep(0.1)
 
 sign_in_btn = wd.find_element(By.XPATH, '/html/body/div[1]/main/section[2]/div/div/div[1]/form/div/p/input')
 sign_in_btn.click()
-time.sleep(1)
+time.sleep(1.5)
 
 # Express checkout with PayPal
 pp_btn = wd.find_element(By.XPATH, '/html/body/div[1]/div/div/div/div[1]/div/div[2]/div/div/div/div[2]/div/div/div[2]/main/form/div[1]/div/div/div[1]/div[1]/div[2]')
@@ -110,4 +126,4 @@ time.sleep(2)
 # Only for final transaction:
 # pay_now_btn = wd.find_element(By.XPATH, '/html/body/div[1]/div[1]/div/div/div[1]/div/div[2]/div/div/div/div[2]/div/div/div[2]/main/div/form/div[1]/div/div[2]/div[1]/button')
 # pay_now_btn.click()
-time.sleep(100)
+print("Script has executed in " + str(int(time.time() - start)) + " seconds.")
