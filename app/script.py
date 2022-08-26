@@ -7,10 +7,6 @@ from selenium import webdriver as wd
 from selenium.webdriver.common.by import By
 from dotenv import load_dotenv
 
-
-
-
-
 # load .env variables, initialize Chrome driver and wait for it to load
 load_dotenv()
 wd = wd.Chrome()
@@ -35,24 +31,21 @@ def sendData(xpath, data):
     time.sleep(random.uniform(0.1, 0.2))
     return
 
+print("*ENSURE THE FINAL CLICK FUNCTION CALL IS UNCOMMENTED BEFORE USING THIS SCRIPT FOR A REAL DROP*")
 # Head to the url, find the add-to-cart btn, and click it
-# real URL: https://store.401games.ca/products/pokemon-ultra-premium-collection-charizard-pre-order
-# test URL: https://store.401games.ca/collections/all/products/pokemon-astral-radiance-checklane-blister-bundle?variant=42511032156347
+url = input("Enter an item URL: ")
 
 # as long as the add to cart btn is not available, keep trying
 count = 0
 while True:
     try:
-        wd.get("https://store.401games.ca/collections/all/products/pokemon-astral-radiance-checklane-blister-bundle?variant=42511032156347")
-
+        wd.get(url)
         count += 1
         if count == 30:
             res = input("Would you like to keep searching? (Y/N)")
-            if res is "N" or res is "n":
+            if res == "N" or res == "n":
                 quit()
-
         time.sleep(1)
-
         clickBtn('//*[@id="AddToCart-product-template"]')
         clickBtn('//*[@id="CartButton"]')
         clickBtn('//*[@id="shopify-section-cart-template"]/section/div/div/div/form/div[2]/div[2]/input[2]')
@@ -74,7 +67,6 @@ while True:
         break
     except:
         continue
-
 
 # find all available window names, and head to the one that we're not currently on
 for handle in wd.window_handles:
