@@ -23,7 +23,7 @@ main_page = wd.current_window_handle
 # as long as the add to cart btn is not available, keep trying
 while True:
     try:
-        wd.get("https://store.401games.ca/collections/all/products/pokemon-astral-radiance-checklane-blister-bundle?variant=42511032156347")
+        wd.get("https://store.401games.ca/products/pokemon-ultra-premium-collection-charizard-pre-order")
         time.sleep(1)
 
         add_cart_btn = wd.find_element(By.XPATH, '//*[@id="AddToCart-product-template"]')
@@ -59,10 +59,16 @@ sign_in_btn = wd.find_element(By.XPATH, '/html/body/div[1]/main/section[2]/div/d
 sign_in_btn.click()
 time.sleep(1.5)
 
-# Express checkout with PayPal
-pp_btn = wd.find_element(By.XPATH, '/html/body/div[1]/div/div/div/div[1]/div/div[2]/div/div/div/div[2]/div/div/div[2]/main/form/div[1]/div/div/div[1]/div[1]/div[2]')
-pp_btn.click()
-time.sleep(5)
+while True:
+    try:
+        # Express checkout with PayPal
+        pp_btn = wd.find_element(By.XPATH, '/html/body/div[1]/div/div/div/div[1]/div/div[2]/div/div/div/div[2]/div/div/div[2]/main/form/div[1]/div/div/div[1]/div[1]/div[2]')
+        pp_btn.click()
+        time.sleep(5)
+        break
+    except:
+        continue
+
 
 # find all available window names, and head to the one that we're not currently on
 for handle in wd.window_handles:
@@ -121,6 +127,6 @@ continue_payment_btn.click()
 time.sleep(2)
 
 # Only for final transaction:
-# pay_now_btn = wd.find_element(By.XPATH, '/html/body/div[1]/div[1]/div/div/div[1]/div/div[2]/div/div/div/div[2]/div/div/div[2]/main/div/form/div[1]/div/div[2]/div[1]/button')
-# pay_now_btn.click()
+pay_now_btn = wd.find_element(By.XPATH, '/html/body/div[1]/div[1]/div/div/div[1]/div/div[2]/div/div/div/div[2]/div/div/div[2]/main/div/form/div[1]/div/div[2]/div[1]/button')
+pay_now_btn.click()
 print("Script has executed in " + str(int(time.time() - start)) + " seconds.")
